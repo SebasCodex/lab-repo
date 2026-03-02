@@ -58,7 +58,10 @@ function estado(usuario) {
 
 }
 
-pagar(cliente1, 30)
+estado(cliente1)
+estado(cliente2)
+
+
 
 
 

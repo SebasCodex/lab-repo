@@ -49,3 +49,17 @@ document.getElementById("btnAgregar").addEventListener("click", () => {
     agregarPlatoDemo();
     renderMenu();
 });
+
+function buscarPlatoPorNombre(nombrePlato) {
+
+    const plato = menu.find(platillos => platillos.nombre === nombrePlato);
+    if (!plato) {
+
+        return `<p> no tenemos ese plato </p>`;
+
+    }
+
+
+    return plato
+
+}

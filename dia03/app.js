@@ -22,6 +22,7 @@ function renderMenu() {
     }
 
     html += "</ul>";
+    html += contarPlatos();
     output.innerHTML = html;
 }
 
@@ -29,6 +30,14 @@ function renderMenu() {
 function agregarPlatoDemo() {
     const nuevoPlato = { nombre: "Pollo a la brasa", precio: 20, stock: 4 };
     menu.push(nuevoPlato);
+}
+
+function contarPlatos() {
+
+
+
+    return `<p> en el menú hay ${menu.length} platos </p>`;
+
 }
 
 // 4) EVENTOS: conectar botones con funciones

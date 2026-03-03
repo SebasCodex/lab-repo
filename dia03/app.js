@@ -63,3 +63,30 @@ function buscarPlatoPorNombre(nombrePlato) {
     return plato
 
 }
+
+function renderLista(titulo, listaDeTextos) {
+
+    const output = document.getElementById("output")
+
+    output.innerHTML = ""
+
+    let html = `<h3> ${titulo} </h3>`
+    html += "<ul>";
+
+
+    for (let i = 0; i < listaDeTextos.length; i++) {
+
+        const item = listaDeTextos[i];
+
+        html += `<li>${item}</li>`
+
+    }
+
+    html += "</ul>"
+
+    output.innerHTML = html;
+
+}
+
+renderLista("productos encontrados", plato)
+

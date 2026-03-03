@@ -18,7 +18,7 @@ function renderMenu() {
 
     for (let i = 0; i < menu.length; i++) {
         const plato = menu[i];
-        html += `<li>${plato.nombre} — S/ ${plato.precio} — Stock: ${plato.stock}</li>`;
+        html += `<li><b>${plato.nombre}</b> — S/ ${plato.precio} — Stock: ${plato.stock}</li>`;
     }
 
     html += "</ul>";

@@ -33,35 +33,23 @@ function agregarPlatoDemo() {
 }
 
 function contarPlatos() {
-
-
-
     return `<p> en el menú hay ${menu.length} platos </p>`;
-
 }
 
-// 4) EVENTOS: conectar botones con funciones
-document.getElementById("btnMostrar").addEventListener("click", () => {
-    renderMenu();
-});
+function filtrarStockBajo() {
+    return menu.filter(plato => plato.stock <= 3);
+}
 
-document.getElementById("btnAgregar").addEventListener("click", () => {
-    agregarPlatoDemo();
-    renderMenu();
-});
+
 
 function buscarPlatoPorNombre(nombrePlato) {
-
     const plato = menu.find(platillos => platillos.nombre === nombrePlato);
     if (!plato) {
-
-        return `<p> no tenemos ese plato </p>`;
-
+        renderLista("Resultados encontrados: ", ["No tenemos ese plato"])
+        return;
     }
-
-
-    return plato
-
+    renderLista("Resultados encontrados: ", plato)
+    return;
 }
 
 function renderLista(titulo, listaDeTextos) {
@@ -75,18 +63,28 @@ function renderLista(titulo, listaDeTextos) {
 
 
     for (let i = 0; i < listaDeTextos.length; i++) {
-
         const item = listaDeTextos[i];
-
         html += `<li>${item}</li>`
 
     }
 
     html += "</ul>"
-
     output.innerHTML = html;
 
 }
+
+
+// 4) EVENTOS: conectar botones con funciones
+document.getElementById("btnMostrar").addEventListener("click", () => {
+    renderMenu();
+});
+
+document.getElementById("btnAgregar").addEventListener("click", () => {
+    agregarPlatoDemo();
+    renderMenu();
+});
+
+
 
 renderLista("productos encontrados", plato)
 

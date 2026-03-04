@@ -40,7 +40,9 @@ function filtrarStockBajo() {
     return menu.filter(plato => plato.stock <= 3);
 }
 
-
+function obtenerResumenMenu() {
+    return menu.map(plato => `${plato.nombre} - S/. ${plato.precio}`)
+}
 
 function buscarPlatoPorNombre(nombrePlato) {
     const plato = menu.find(platillos => platillos.nombre === nombrePlato);

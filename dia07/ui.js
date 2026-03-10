@@ -10,37 +10,27 @@ export function renderMenu() {
     menu.forEach(plato => {
         let clase = plato.stock === 0 ? "agotado" : (plato.stock <= 3 ? "bajo" : "normal");
         html += `<li class="${clase}">
-            <b>${plato.nombre}</b> — S/ ${plato.precio} — Stock: ${plato.stock}
+            <b>${plato.nombre}</b> - Precio: S/ ${plato.precio} - Stock: ${plato.stock}
         </li>`;
     });
     html += "</ul>" + verificarEstadoGeneral();
     output.innerHTML = html;
 }
 
-export function renderLista(titulo, listaDeTextos) {
-    const output = document.getElementById("output");
-    output.innerHTML = `<h3>${titulo}</h3><ul>${listaDeTextos.map(t => `<li>${t}</li>`).join('')}</ul>`;
-}
-
+/* Parte C: Clasificacion visual segun el tipo de excepcion capturada */
 export function mostrarMensaje(mensaje, tipo = "normal") {
     const output = document.getElementById("output");
     let color = "black";
-    if (tipo === "procesando") color = "blue";
-    else if (tipo === "error") color = "red";
-    else if (tipo === "exito") color = "green";
+    let prefijo = "";
 
-    output.innerHTML = `<p style="color: ${color}; font-weight: bold;">${mensaje}</p>`;
-}
+    if (tipo === "procesando") { color = "blue"; prefijo = "[PROCESANDO] "; }
+    else if (tipo === "negocio") { color = "orange"; prefijo = "[ADVERTENCIA] "; }
+    else if (tipo === "sistema") { color = "red"; prefijo = "[ERROR SISTEMA] "; }
+    else if (tipo === "exito") { color = "green"; prefijo = "[OK] "; }
 
-export function obtenerInputBusqueda() {
-    return document.getElementById("inputBuscar").value;
-}
-
-export function limpiarInput() {
-    document.getElementById("inputBuscar").value = "";
+    output.innerHTML = `<p style="color: ${color}; font-weight: bold;">${prefijo}${mensaje}</p>`;
 }
 
 export function setBotonesEstado(deshabilitado) {
-    const botones = document.querySelectorAll("button");
-    botones.forEach(btn => btn.disabled = deshabilitado);
+    document.querySelectorAll("button").forEach(btn => btn.disabled = deshabilitado);
 }

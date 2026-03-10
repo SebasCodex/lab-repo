@@ -1,11 +1,20 @@
 import { obtenerMenu } from './menu.js';
 
+/* Parte A: Clase de error personalizada para reglas de negocio */
+export class ErrorNegocio extends Error {
+    constructor(mensaje) {
+        super(mensaje);
+        this.name = "ErrorNegocio";
+    }
+}
+
+/* Simulacion de respuesta asincrona con probabilidad de fallo de sistema */
 export function simularRespuestaServidor(resultado) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             const falla = Math.random() < 0.3;
             if (falla) {
-                reject("Error del servidor simulado.");
+                reject(new Error("Fallo en la comunicacion con el servidor central."));
             } else {
                 resolve(resultado);
             }
@@ -13,25 +22,28 @@ export function simularRespuestaServidor(resultado) {
     });
 }
 
-export function venderPlato(nombre) {
+/* Parte B y E: Validacion de entrada y mantenimiento de estado consistente */
+export async function venderPlatoAsync(nombre, cantidad) {
     const menu = obtenerMenu();
     const plato = menu.find(p => p.nombre.toLowerCase() === nombre.toLowerCase());
 
-    if (!plato) return { ok: false, mensaje: "El plato no existe" };
-    if (plato.stock === 0) return { ok: false, mensaje: "No hay stock disponible" };
-
-    plato.stock--;
-    return { ok: true, mensaje: `Venta exitosa: ${plato.nombre}` };
-}
-
-export async function venderPlatoAsync(nombre) {
-    const resultado = venderPlato(nombre);
-
-    if (!resultado.ok) {
-        throw new Error(resultado.mensaje);
+    /* Validaciones de logica de negocio antes de contactar al servidor */
+    if (!plato) {
+        throw new ErrorNegocio(`El producto "${nombre}" no se encuentra en el catalogo.`);
     }
 
-    const respuesta = await simularRespuestaServidor(resultado.mensaje);
+    if (plato.stock < cantidad) {
+        throw new ErrorNegocio(`Existencias insuficientes. Stock actual: ${plato.stock}`);
+    }
+
+    const mensajeExito = `Operacion confirmada: ${cantidad} unidad(es) de ${plato.nombre}`;
+
+    /* Parte E: El stock no se altera hasta que el servidor confirma la operacion */
+    const respuesta = await simularRespuestaServidor(mensajeExito);
+
+    /* Actualizacion del estado local solo tras confirmacion exitosa */
+    plato.stock -= cantidad;
+
     return respuesta;
 }
 
@@ -40,15 +52,7 @@ export function verificarEstadoGeneral() {
     const agotados = menu.filter(p => p.stock === 0).length;
     const bajoStock = menu.filter(p => p.stock > 0 && p.stock <= 3).length;
 
-    if (agotados > 0) return "<p>Hay platos agotados</p>";
-    if (bajoStock > 0) return "<p>Hay platos con stock bajo</p>";
-    return "<p>Todo disponible</p>";
-}
-
-export function buscarPlato(nombre) {
-    return obtenerMenu().find(p => p.nombre.toLowerCase() === nombre.toLowerCase());
-}
-
-export function filtrarStockBajo() {
-    return obtenerMenu().filter(p => p.stock <= 3);
+    if (agotados > 0) return "<p style='color:red'>Alerta: Existen productos sin existencias.</p>";
+    if (bajoStock > 0) return "<p style='color:orange'>Aviso: Existen productos con stock critico.</p>";
+    return "<p style='color:green'>Estado nominal: Todos los productos disponibles.</p>";
 }

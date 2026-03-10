@@ -10,37 +10,34 @@ export function renderMenu() {
     menu.forEach(plato => {
         let clase = plato.stock === 0 ? "agotado" : (plato.stock <= 3 ? "bajo" : "normal");
         html += `<li class="${clase}">
-            <b>${plato.nombre}</b> — S/ ${plato.precio} — Stock: ${plato.stock}
+            <b>${plato.nombre}</b> - Precio: S/ ${plato.precio} - Stock: ${plato.stock}
         </li>`;
     });
     html += "</ul>" + verificarEstadoGeneral();
     output.innerHTML = html;
 }
 
-export function renderLista(titulo, listaDeTextos) {
-    const output = document.getElementById("output");
-    output.innerHTML = `<h3>${titulo}</h3><ul>${listaDeTextos.map(t => `<li>${t}</li>`).join('')}</ul>`;
-}
-
 export function mostrarMensaje(mensaje, tipo = "normal") {
     const output = document.getElementById("output");
     let color = "black";
+
     if (tipo === "procesando") color = "blue";
-    else if (tipo === "error") color = "red";
+    else if (tipo === "negocio" || tipo === "sistema") color = "red";
     else if (tipo === "exito") color = "green";
 
-    output.innerHTML = `<p style="color: ${color}; font-weight: bold;">${mensaje}</p>`;
+    output.innerHTML = `<h2 style="color: ${color}; font-weight: bold;">${mensaje}</h2>`;
 }
 
-export function obtenerInputBusqueda() {
-    return document.getElementById("inputBuscar").value;
+export function setBotonesEstado(bloqueado) {
+    document.querySelectorAll("button").forEach(btn => btn.disabled = bloqueado);
 }
 
 export function limpiarInput() {
-    document.getElementById("inputBuscar").value = "";
+    const input = document.getElementById("inputBuscar");
+    if (input) input.value = "";
 }
 
-export function setBotonesEstado(deshabilitado) {
-    const botones = document.querySelectorAll("button");
-    botones.forEach(btn => btn.disabled = deshabilitado);
+export function renderLista(titulo, items) {
+    const output = document.getElementById("output");
+    output.innerHTML = `<h3>${titulo}</h3><ul>${items.map(i => `<li>${i}</li>`).join('')}</ul>`;
 }

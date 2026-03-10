@@ -12,3 +12,5 @@ operaciones.js
 ui.js
 
 README.md
+
+<img src="/evidence/image.png" width="400">

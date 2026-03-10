@@ -56,3 +56,11 @@ export function verificarEstadoGeneral() {
     if (bajoStock > 0) return "<p style='color:orange'>Aviso: Existen productos con stock critico.</p>";
     return "<p style='color:green'>Estado nominal: Todos los productos disponibles.</p>";
 }
+
+export function buscarPlato(nombre) {
+    return obtenerMenu().find(p => p.nombre.toLowerCase() === nombre.toLowerCase());
+}
+
+export function filtrarStockBajo() {
+    return obtenerMenu().filter(p => p.stock <= 3);
+}

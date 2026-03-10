@@ -1,50 +1,65 @@
-import { obtenerMenu, agregarAlMenu } from './menu.js';
-import { renderMenu, renderLista, mostrarMensaje, obtenerInputBusqueda, limpiarInput, setBotonesEstado } from './ui.js';
-import { venderPlatoAsync, buscarPlato, filtrarStockBajo } from './operaciones.js';
+import {
+    renderMenu,
+    mostrarMensaje,
+    setBotonesEstado,
+    limpiarInput
+} from './ui.js';
 
+import {
+    venderPlatoAsync,
+    ErrorNegocio
+} from './operaciones.js';
+
+/* Evento para cargar y mostrar el menu inicial */
 document.getElementById("btnMostrar").addEventListener("click", renderMenu);
 
-document.getElementById("btnAgregar").addEventListener("click", () => {
-    agregarAlMenu({ nombre: "Lomo saltado", precio: 18, stock: 3 });
-    renderMenu();
-});
-
-document.getElementById("btnBuscar").addEventListener("click", () => {
-    const nombre = obtenerInputBusqueda();
-    const encontrado = buscarPlato(nombre);
-    if (!encontrado) {
-        renderLista("Resultados", ["No tenemos ese plato"]);
-    } else {
-        renderLista("Resultados", [`${encontrado.nombre} - S/ ${encontrado.precio}`]);
-    }
-});
-
+/* Evento principal para la gestion de ventas */
 document.getElementById("btnVender").addEventListener("click", async () => {
-    const nombre = obtenerInputBusqueda();
-    if (!nombre) return mostrarMensaje("Escribe un nombre", "error");
+    /* Parte D: Captura y validacion de datos de entrada */
+    const nombre = document.getElementById("inputBuscar").value.trim();
+    const cantidadInput = document.getElementById("inputCantidad").value;
+    const cantidad = parseInt(cantidadInput);
+
+    /* Validaciones obligatorias antes de procesar */
+    if (!nombre) {
+        return mostrarMensaje("Debe ingresar el nombre de un plato.", "negocio");
+    }
+
+    if (isNaN(cantidad) || cantidad <= 0) {
+        return mostrarMensaje("La cantidad debe ser un numero mayor a cero.", "negocio");
+    }
 
     try {
+        /* Bloqueo de interfaz para evitar multiples peticiones */
         setBotonesEstado(true);
-        mostrarMensaje("Procesando pedido...", "procesando");
+        mostrarMensaje("Enviando pedido al servidor...", "procesando");
 
-        const mensaje = await venderPlatoAsync(nombre);
+        /* Parte B y E: Intento de venta asincrona */
+        const respuestaServidor = await venderPlatoAsync(nombre, cantidad);
 
-        mostrarMensaje(mensaje, "exito");
+        /* Si la ejecucion llega aqui, la venta fue exitosa */
+        mostrarMensaje(respuestaServidor, "exito");
         limpiarInput();
-        setTimeout(renderMenu, 1500);
+        renderMenu();
+
     } catch (error) {
-        mostrarMensaje(error.message || error, "error");
+        /* Parte C: Manejo diferenciado de errores */
+        if (error instanceof ErrorNegocio) {
+            /* Error de logica (ej: stock insuficiente) */
+            mostrarMensaje(error.message, "negocio");
+        } else {
+            /* Error tecnico (ej: fallo de red) */
+            mostrarMensaje("Fallo del sistema: " + error.message, "sistema");
+        }
+
+        /* Parte E: Refresco de interfaz para asegurar estado consistente */
+        renderMenu();
+
     } finally {
+        /* Liberacion de botones independientemente del resultado */
         setBotonesEstado(false);
     }
 });
 
-document.getElementById("btnStockBajo").addEventListener("click", () => {
-    const lista = filtrarStockBajo().map(p => `${p.nombre} (${p.stock})`);
-    renderLista("Stock Bajo", lista);
-});
-
-document.getElementById("btnResumen").addEventListener("click", () => {
-    const lista = obtenerMenu().map(p => `${p.nombre} - S/ ${p.precio}`);
-    renderLista("Resumen", lista);
-});
+/* Renderizado inicial al cargar la pagina */
+document.addEventListener("DOMContentLoaded", renderMenu);

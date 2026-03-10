@@ -2,7 +2,7 @@ import { agregarAlMenu } from './menu.js';
 import { renderMenu, renderLista, mostrarAlerta, obtenerInputBusqueda } from './ui.js';
 import { venderPlato, filtrarStockBajo, buscarPlato } from './operaciones.js';
 
-// Eventos
+// Eventos--
 document.getElementById("btnMostrar").addEventListener("click", renderMenu);
 
 document.getElementById("btnAgregar").addEventListener("click", () => {

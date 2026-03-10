@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Restaurante — Pedrito</title>
+    <style>
+        .normal {
+            color: black;
+        }
+
+        .bajo {
+            color: orange;
+            font-weight: bold;
+        }
+
+        .agotado {
+            color: red;
+            font-weight: bold;
+        }
+
+        #output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            min-height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Menú del Restaurante</h1>
+    <button id="btnMostrar">Mostrar menú</button>
+    <button id="btnAgregar">Agregar plato demo</button>
+    <hr>
+    <h2>Herramientas</h2>
+    <input id="inputBuscar" placeholder="Buscar plato por nombre" />
+    <button id="btnBuscar">Buscar</button>
+    <button id="btnVender">Vender</button>
+    <button id="btnStockBajo">Ver stock bajo</button>
+    <button id="btnResumen">Ver resumen</button>
+    <div id="output"></div>
+
+    <script type="module" src="./main.js"></script>
+</body>
+
+</html>

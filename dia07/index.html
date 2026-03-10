@@ -3,8 +3,53 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Restaurante — Pedrito</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú del Restaurante - Panel de Control</title>
     <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .herramientas {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 8px 15px;
+            cursor: pointer;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        input {
+            padding: 8px;
+            width: 250px;
+            margin-right: 5px;
+        }
+
+        #output {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-height: 100px;
+        }
+
+        /* Estilos para el inventario */
         .normal {
             color: black;
         }
@@ -16,32 +61,47 @@
 
         .agotado {
             color: red;
-            font-weight: bold;
+            text-decoration: line-through;
         }
 
-        #output {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            min-height: 100px;
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+
+        li {
+            margin-bottom: 5px;
         }
     </style>
 </head>
 
 <body>
+
     <h1>Menú del Restaurante</h1>
-    <button id="btnMostrar">Mostrar menú</button>
-    <button id="btnAgregar">Agregar plato demo</button>
+
+    <div class="controles-principales">
+        <button id="btnMostrar">Mostrar menú</button>
+        <button id="btnAgregar">Agregar plato demo</button>
+    </div>
+
     <hr>
-    <h2>Herramientas</h2>
-    <input id="inputBuscar" placeholder="Buscar plato por nombre" />
-    <button id="btnBuscar">Buscar</button>
-    <button id="btnVender">Vender</button>
-    <button id="btnStockBajo">Ver stock bajo</button>
-    <button id="btnResumen">Ver resumen</button>
-    <div id="output"></div>
+
+    <div class="herramientas">
+        <h2>Herramientas</h2>
+        <input type="text" id="inputBuscar" placeholder="Buscar plato por nombre" />
+
+        <button id="btnBuscar">Buscar</button>
+        <button id="btnVender">Vender</button>
+        <button id="btnStockBajo">Ver stock bajo</button>
+        <button id="btnResumen">Ver resumen</button>
+    </div>
+
+    <div id="output">
+        Cargando sistema...
+    </div>
 
     <script type="module" src="./main.js"></script>
+
 </body>
 
 </html>

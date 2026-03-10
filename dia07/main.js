@@ -1,65 +1,60 @@
-import {
-    renderMenu,
-    mostrarMensaje,
-    setBotonesEstado,
-    limpiarInput
-} from './ui.js';
+import { renderMenu, renderLista, mostrarMensaje, setBotonesEstado, limpiarInput } from './ui.js';
+import { venderPlatoAsync, buscarPlato, filtrarStockBajo, ErrorNegocio } from './operaciones.js';
+import { agregarAlMenu, obtenerMenu } from './menu.js';
 
-import {
-    venderPlatoAsync,
-    ErrorNegocio
-} from './operaciones.js';
-
-/* Evento para cargar y mostrar el menu inicial */
 document.getElementById("btnMostrar").addEventListener("click", renderMenu);
 
-/* Evento principal para la gestion de ventas */
-document.getElementById("btnVender").addEventListener("click", async () => {
-    /* Parte D: Captura y validacion de datos de entrada */
+document.getElementById("btnAgregar").addEventListener("click", () => {
+    agregarAlMenu({ nombre: "Plato Demo", precio: 15, stock: 5 });
+    renderMenu();
+});
+
+document.getElementById("btnBuscar").addEventListener("click", () => {
     const nombre = document.getElementById("inputBuscar").value.trim();
-    const cantidadInput = document.getElementById("inputCantidad").value;
-    const cantidad = parseInt(cantidadInput);
-
-    /* Validaciones obligatorias antes de procesar */
-    if (!nombre) {
-        return mostrarMensaje("Debe ingresar el nombre de un plato.", "negocio");
+    const plato = buscarPlato(nombre);
+    if (plato) {
+        renderLista("Resultado", [`${plato.nombre} - Stock: ${plato.stock}`]);
+    } else {
+        mostrarMensaje("Procesando error: Plato no encontrado.", "negocio");
     }
+});
 
-    if (isNaN(cantidad) || cantidad <= 0) {
-        return mostrarMensaje("La cantidad debe ser un numero mayor a cero.", "negocio");
-    }
+document.getElementById("btnVender").addEventListener("click", async () => {
+    const nombre = document.getElementById("inputBuscar").value.trim();
+
+    if (!nombre) return mostrarMensaje("Procesando error: Ingrese nombre.", "negocio");
 
     try {
-        /* Bloqueo de interfaz para evitar multiples peticiones */
         setBotonesEstado(true);
-        mostrarMensaje("Enviando pedido al servidor...", "procesando");
+        mostrarMensaje("Procesando...", "procesando");
 
-        /* Parte B y E: Intento de venta asincrona */
-        const respuestaServidor = await venderPlatoAsync(nombre, cantidad);
+        const respuesta = await venderPlatoAsync(nombre, 1);
 
-        /* Si la ejecucion llega aqui, la venta fue exitosa */
-        mostrarMensaje(respuestaServidor, "exito");
+        mostrarMensaje(respuesta, "exito");
         limpiarInput();
-        renderMenu();
+
+        setTimeout(renderMenu, 2000);
 
     } catch (error) {
-        /* Parte C: Manejo diferenciado de errores */
         if (error instanceof ErrorNegocio) {
-            /* Error de logica (ej: stock insuficiente) */
             mostrarMensaje(error.message, "negocio");
         } else {
-            /* Error tecnico (ej: fallo de red) */
-            mostrarMensaje("Fallo del sistema: " + error.message, "sistema");
+            mostrarMensaje("Procesando error: " + error.message, "sistema");
         }
-
-        /* Parte E: Refresco de interfaz para asegurar estado consistente */
-        renderMenu();
-
+        setTimeout(renderMenu, 2000);
     } finally {
-        /* Liberacion de botones independientemente del resultado */
         setBotonesEstado(false);
     }
 });
 
-/* Renderizado inicial al cargar la pagina */
+document.getElementById("btnStockBajo").addEventListener("click", () => {
+    const items = filtrarStockBajo().map(p => `${p.nombre} (${p.stock})`);
+    renderLista("Stock Bajo", items.length ? items : ["Sin alertas"]);
+});
+
+document.getElementById("btnResumen").addEventListener("click", () => {
+    const items = obtenerMenu().map(p => `${p.nombre} - S/ ${p.precio}`);
+    renderLista("Resumen", items);
+});
+
 document.addEventListener("DOMContentLoaded", renderMenu);

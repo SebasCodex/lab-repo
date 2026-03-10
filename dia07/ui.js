@@ -17,28 +17,27 @@ export function renderMenu() {
     output.innerHTML = html;
 }
 
-/* Parte C: Clasificacion visual segun el tipo de excepcion capturada-- */
 export function mostrarMensaje(mensaje, tipo = "normal") {
     const output = document.getElementById("output");
     let color = "black";
-    let prefijo = "";
 
-    if (tipo === "procesando") { color = "blue"; prefijo = "[PROCESANDO] "; }
-    else if (tipo === "negocio") { color = "orange"; prefijo = "[ADVERTENCIA] "; }
-    else if (tipo === "sistema") { color = "red"; prefijo = "[ERROR SISTEMA] "; }
-    else if (tipo === "exito") { color = "green"; prefijo = "[OK] "; }
+    if (tipo === "procesando") color = "blue";
+    else if (tipo === "negocio" || tipo === "sistema") color = "red";
+    else if (tipo === "exito") color = "green";
 
-    output.innerHTML = `<p style="color: ${color}; font-weight: bold;">${prefijo}${mensaje}</p>`;
+    output.innerHTML = `<h2 style="color: ${color}; font-weight: bold;">${mensaje}</h2>`;
 }
 
-export function setBotonesEstado(deshabilitado) {
-    document.querySelectorAll("button").forEach(btn => btn.disabled = deshabilitado);
+export function setBotonesEstado(bloqueado) {
+    document.querySelectorAll("button").forEach(btn => btn.disabled = bloqueado);
 }
 
 export function limpiarInput() {
-    const inputNombre = document.getElementById("inputBuscar");
-    const inputCantidad = document.getElementById("inputCantidad");
+    const input = document.getElementById("inputBuscar");
+    if (input) input.value = "";
+}
 
-    if (inputNombre) inputNombre.value = "";
-    if (inputCantidad) inputCantidad.value = "1";
+export function renderLista(titulo, items) {
+    const output = document.getElementById("output");
+    output.innerHTML = `<h3>${titulo}</h3><ul>${items.map(i => `<li>${i}</li>`).join('')}</ul>`;
 }

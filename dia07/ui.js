@@ -17,7 +17,7 @@ export function renderMenu() {
     output.innerHTML = html;
 }
 
-/* Parte C: Clasificacion visual segun el tipo de excepcion capturada */
+/* Parte C: Clasificacion visual segun el tipo de excepcion capturada-- */
 export function mostrarMensaje(mensaje, tipo = "normal") {
     const output = document.getElementById("output");
     let color = "black";

@@ -1,6 +1,6 @@
 import { obtenerMenu } from './menu.js';
 import { verificarEstadoGeneral } from './operaciones.js';
-
+//xD
 export function renderMenu() {
     const output = document.getElementById("output");
     const menu = obtenerMenu();

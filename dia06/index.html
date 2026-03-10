@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Restaurante — Pedrito</title>
+
+    <style>
+        /* Tus estilos originales */
+        .normal {
+            color: black;
+        }
+
+        .bajo {
+            color: orange;
+            font-weight: bold;
+        }
+
+        .agotado {
+            color: red;
+            font-weight: bold;
+        }
+
+        /* Un poco de estilo extra para el contenedor de salida --*/
+        #output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            min-height: 50px;
+            background-color: #f9f9f9;
+        }
+
+        button {
+            margin: 2px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Menú del Restaurante</h1>
+
+    <button id="btnMostrar">Mostrar menú</button>
+    <button id="btnAgregar">Agregar plato demo</button>
+
+    <hr>
+
+    <h2>Herramientas</h2>
+
+    <input id="inputBuscar" type="text" placeholder="Buscar plato por nombre" />
+    <button id="btnBuscar">Buscar</button>
+    <button id="btnVender">Vender</button>
+
+    <br><br>
+
+    <button id="btnStockBajo">Ver stock bajo (<= 3)</button>
+            <button id="btnResumen">Ver resumen</button>
+
+            <div id="output">
+                <p>Presiona "Mostrar menú" para comenzar.</p>
+            </div>
+
+            <script type="module" src="./main.js"></script>
+</body>
+
+</html>

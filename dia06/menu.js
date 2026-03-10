@@ -1,4 +1,4 @@
-// Arreglo inicial de datos
+// Arreglo inicial de datos--
 let menu = [
     { nombre: "Arroz con pollo", precio: 12, stock: 5 },
     { nombre: "Lomo saltado", precio: 18, stock: 3 },

@@ -1,5 +1,5 @@
 import { obtenerMenu } from './menu.js';
-
+//uwu
 export function venderPlato(nombreBusqueda) {
     const menu = obtenerMenu();
     const plato = menu.find(p => p.nombre.toLowerCase() === nombreBusqueda.toLowerCase());

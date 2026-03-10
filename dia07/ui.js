@@ -34,3 +34,11 @@ export function mostrarMensaje(mensaje, tipo = "normal") {
 export function setBotonesEstado(deshabilitado) {
     document.querySelectorAll("button").forEach(btn => btn.disabled = deshabilitado);
 }
+
+export function limpiarInput() {
+    const inputNombre = document.getElementById("inputBuscar");
+    const inputCantidad = document.getElementById("inputCantidad");
+
+    if (inputNombre) inputNombre.value = "";
+    if (inputCantidad) inputCantidad.value = "1";
+}

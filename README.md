@@ -1,6 +1,6 @@
 # estructura de carpetas 
 
--dia06
+-dia08
 --index.html
 --main.js
 --menu.js
